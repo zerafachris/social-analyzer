@@ -130,7 +130,7 @@ def find_username_normal(req, WEBSITES_ENTRIES):
         '''
         this runs for every website entry
         '''
-        print(f'Fetching {site["url"]}-{username}-{options}')
+        print(f'Fetching {site}-{username}-{options}')
         sleep(randint(1, 99) / 100)
         LOG.info("[Checking] " + get_fld(site["url"]))
         source = ""
@@ -491,6 +491,7 @@ def check_user_cli(username, websites, options, profiles, filter, method):
                 temp_detected["failed"].append(item)
 
     with suppress(Exception):
+        print('SETTINGS', profiles, filter)
         if len(temp_detected["detected"]) == 0:
             del temp_detected["detected"]
         else:
@@ -523,7 +524,6 @@ def check_user_cli(username, websites, options, profiles, filter, method):
             else:
                 del temp_detected["failed"]
 
-
     return temp_detected
 
 
@@ -542,12 +542,14 @@ async def root(
         # find -> show detected profiles, get -> show all profiles regardless detected or not, both -> combine find & get
         profiles: str = "all",
         # filter profiles by detected, unknown or failed, you can do combine them with comma (detected,failed) or use all
-        filter: str = "all",
+        filter: str = "all"
         # filter detected profiles by good, maybe or bad, you can do combine them with comma (good,bad) or use all
-
 ):
     if options == "all":
         options = ""
     return check_user_cli(username=username, websites=websites,
                           options=options, profiles=profiles, filter=filter,
                           method=method)
+#
+# # if __name__ == "__main__":
+# #     uvicorn.run("mapp:app", host="0.0.0.0", port=8081, reload=True)
